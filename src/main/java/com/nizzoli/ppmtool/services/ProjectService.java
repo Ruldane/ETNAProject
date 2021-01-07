@@ -1,12 +1,10 @@
 package com.nizzoli.ppmtool.services;
 
-import com.nizzoli.ppmtool.Project;
+import com.nizzoli.ppmtool.domain.Project;
 import com.nizzoli.ppmtool.exceptions.ProjectIdException;
 import com.nizzoli.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
 
 
 @Service

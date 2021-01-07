@@ -1,21 +1,19 @@
 package com.nizzoli.ppmtool.web;
 
-import com.nizzoli.ppmtool.Project;
+import com.nizzoli.ppmtool.domain.Project;
 import com.nizzoli.ppmtool.services.MapValidationErrorService;
 import com.nizzoli.ppmtool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/project")
+@CrossOrigin
 public class ProjectController {
 
     @Autowired

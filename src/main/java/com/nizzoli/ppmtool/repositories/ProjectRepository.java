@@ -1,6 +1,6 @@
 package com.nizzoli.ppmtool.repositories;
 
-import com.nizzoli.ppmtool.Project;
+import com.nizzoli.ppmtool.domain.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
