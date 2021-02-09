@@ -1,10 +1,12 @@
 package com.nizzoli.ppmtool.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import com.nizzoli.ppmtool.domain.Backlog;
 
 @Entity
 public class Project {
@@ -30,7 +32,20 @@ public class Project {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
 
+    @OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    // mean backlog is a child of the project. If project deleted backlog too
+    @JsonIgnore
+    private Backlog Backlog;
+
     public Project() {
+    }
+
+    public com.nizzoli.ppmtool.domain.Backlog getBacklog() {
+        return Backlog;
+    }
+
+    public void setBacklog(com.nizzoli.ppmtool.domain.Backlog backlog) {
+        Backlog = backlog;
     }
 
     public Long getId() {
