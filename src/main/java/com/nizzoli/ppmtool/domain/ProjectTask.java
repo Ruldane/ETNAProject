@@ -12,7 +12,7 @@ public class ProjectTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column (updatable = false)
+    @Column (updatable = false, unique =true)
     private String projectSequence; // find individual project task
     @NotBlank(message = "PLease include a project summary")
     private String summary;
@@ -25,7 +25,7 @@ public class ProjectTask {
     private Date create_At;
     private Date update_At;
     // ManyToOne with Backlog can have many task with one backlog
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH) // refresh the backlog in case we delete a project task
+    @ManyToOne(fetch = FetchType.EAGER) // refresh the backlog in case we delete a project task
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
     @JsonIgnore //in case of problem of recursion
     private Backlog backlog;
