@@ -1,4 +1,4 @@
-package com.nizzoli.ppmtool.services;
+package com.nizzoli.tasksManager.services;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,8 @@ import java.util.Map;
 @Service
 public class MapValidationErrorService {
 
-    public ResponseEntity<?>MapValidationService(BindingResult result){
+    public ResponseEntity<?> MapValidationService(BindingResult result){
+
         if(result.hasErrors()){
             Map<String, String> errorMap = new HashMap<>();
 
@@ -21,6 +22,8 @@ public class MapValidationErrorService {
             }
             return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
         }
+
         return null;
+
     }
 }

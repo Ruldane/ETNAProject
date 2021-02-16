@@ -1,4 +1,4 @@
-package com.nizzoli.ppmtool.domain;
+package com.nizzoli.tasksManager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,36 +11,32 @@ public class Backlog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private Integer PTSequence=0; // entity relationship
+    private Long id;
+    private Integer PTSequence = 0;
     private String projectIdentifier;
 
-    @OneToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id", nullable = false)
-    @JsonIgnore // remove the recurcion in case there is a problem
-    //
-    private Project project; // project is the mappedBy in the project table
+    //OneToOne with project
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="project_id",nullable = false)
+    @JsonIgnore
+    private Project project;
 
-    //OneToMany project taks
+    //OneToMany projecttasks
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog", orphanRemoval = true)
     private List<ProjectTask> projectTasks = new ArrayList<>();
+    //Cascade REFRESH
+    //ORPHAN REMOVAL
+
 
     public Backlog() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     public Integer getPTSequence() {
@@ -59,6 +55,14 @@ public class Backlog {
         this.projectIdentifier = projectIdentifier;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     public List<ProjectTask> getProjectTasks() {
         return projectTasks;
     }
@@ -66,7 +70,4 @@ public class Backlog {
     public void setProjectTasks(List<ProjectTask> projectTasks) {
         this.projectTasks = projectTasks;
     }
-//OneToMany with project tasks
-
-
 }

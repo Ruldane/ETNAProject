@@ -1,6 +1,6 @@
-package com.nizzoli.ppmtool.repositories;
+package com.nizzoli.tasksManager.repositories;
 
-import com.nizzoli.ppmtool.domain.Project;
+import com.nizzoli.tasksManager.domain.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

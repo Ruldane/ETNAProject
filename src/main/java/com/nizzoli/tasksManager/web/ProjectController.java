@@ -1,8 +1,8 @@
-package com.nizzoli.ppmtool.web;
+package com.nizzoli.tasksManager.web;
 
-import com.nizzoli.ppmtool.domain.Project;
-import com.nizzoli.ppmtool.services.MapValidationErrorService;
-import com.nizzoli.ppmtool.services.ProjectService;
+import com.nizzoli.tasksManager.domain.Project;
+import com.nizzoli.tasksManager.services.MapValidationErrorService;
+import com.nizzoli.tasksManager.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,34 +22,34 @@ public class ProjectController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    // create a project
     @PostMapping("")
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
 
-        ResponseEntity<?>errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap!=null) return errorMap;
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap!=null) return errorMap;
 
         Project project1 = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{projectId}") // {pathVariable}
-    public ResponseEntity<?>getProjectById(@PathVariable String projectId){
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId){
 
         Project project = projectService.findProjectByIdentifier(projectId);
-        return  new ResponseEntity<Project>(project, HttpStatus.OK);
+
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
+
 
     @GetMapping("/all")
-    public Iterable<Project> getAllProject(){
-        return projectService.findAllProjects();
-    }
+    public Iterable<Project> getAllProjects(){return projectService.findAllProjects();}
 
-    // delete a project
+
     @DeleteMapping("/{projectId}")
     public ResponseEntity<?> deleteProject(@PathVariable String projectId){
         projectService.deleteProjectByIdentifier(projectId);
 
-        return new ResponseEntity<String>("Project with ID:" + projectId + "was deleted", HttpStatus.OK);
+        return new ResponseEntity<String>("Project with ID: '"+projectId+"' was deleted", HttpStatus.OK);
     }
 }

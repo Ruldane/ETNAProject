@@ -1,4 +1,4 @@
-package com.nizzoli.ppmtool;
+package com.nizzoli.tasksManager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

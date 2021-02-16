@@ -1,4 +1,4 @@
-package com.nizzoli.ppmtool.exceptions;
+package com.nizzoli.tasksManager.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

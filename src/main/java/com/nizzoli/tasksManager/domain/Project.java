@@ -1,12 +1,12 @@
-package com.nizzoli.ppmtool.domain;
+package com.nizzoli.tasksManager.domain;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import com.nizzoli.ppmtool.domain.Backlog;
 
 @Entity
 public class Project {
@@ -32,20 +32,11 @@ public class Project {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
 
-    @OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
-    // mean backlog is a child of the project. If project deleted backlog too
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
     @JsonIgnore
-    private Backlog Backlog;
+    private Backlog backlog;
 
     public Project() {
-    }
-
-    public com.nizzoli.ppmtool.domain.Backlog getBacklog() {
-        return Backlog;
-    }
-
-    public void setBacklog(com.nizzoli.ppmtool.domain.Backlog backlog) {
-        Backlog = backlog;
     }
 
     public Long getId() {
@@ -112,6 +103,14 @@ public class Project {
         this.updated_At = updated_At;
     }
 
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
+    }
+
     @PrePersist
     protected void onCreate(){
         this.created_At = new Date();
@@ -121,4 +120,5 @@ public class Project {
     protected void onUpdate(){
         this.updated_At = new Date();
     }
+
 }

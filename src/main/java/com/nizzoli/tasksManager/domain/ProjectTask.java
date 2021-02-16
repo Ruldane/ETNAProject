@@ -1,9 +1,9 @@
-package com.nizzoli.ppmtool.domain;
+package com.nizzoli.tasksManager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nizzoli.ppmtool.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
@@ -11,34 +11,34 @@ public class ProjectTask {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column (updatable = false, unique =true)
-    private String projectSequence; // find individual project task
-    @NotBlank(message = "PLease include a project summary")
+    private Long id;
+    @Column(updatable = false, unique = true)
+    private String projectSequence;
+    @NotBlank(message = "Please include a project summary")
     private String summary;
     private String acceptanceCriteria;
     private String status;
     private Integer priority;
     private Date dueDate;
-    @Column (updatable = false)
+    //ManyToOne with Backlog
+    @ManyToOne(fetch = FetchType.EAGER) //REMOVE REFRESH
+    @JoinColumn(name="backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
+
+    @Column(updatable = false)
     private String projectIdentifier;
     private Date create_At;
     private Date update_At;
-    // ManyToOne with Backlog can have many task with one backlog
-    @ManyToOne(fetch = FetchType.EAGER) // refresh the backlog in case we delete a project task
-    @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
-    @JsonIgnore //in case of problem of recursion
-    private Backlog backlog;
 
     public ProjectTask() {
-
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -122,6 +122,16 @@ public class ProjectTask {
         this.backlog = backlog;
     }
 
+    @PrePersist
+    protected void onCreate(){
+        this.create_At = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.update_At = new Date();
+    }
+
     @Override
     public String toString() {
         return "ProjectTask{" +
@@ -132,19 +142,10 @@ public class ProjectTask {
                 ", status='" + status + '\'' +
                 ", priority=" + priority +
                 ", dueDate=" + dueDate +
+                ", backlog=" + backlog +
                 ", projectIdentifier='" + projectIdentifier + '\'' +
                 ", create_At=" + create_At +
                 ", update_At=" + update_At +
                 '}';
-    }
-
-    @PrePersist // do this when projectTask is create
-    protected void onCreate(){
-        this.create_At = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate () {
-        this.update_At = new Date();
     }
 }
