@@ -1,8 +1,7 @@
 package com.nizzoli.tasksManager.security;
 
 import com.nizzoli.tasksManager.domain.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +40,28 @@ public class JwtTokenProvider {
     }
 
     //Validate the token
+    public boolean validateToken(String token){
+        try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException ex){
+            System.out.println("Mauvaise signature token");
+        } catch (MalformedJwtException ex){
+            System.out.println("Token Invalide");
+        } catch (ExpiredJwtException ex){
+            System.out.println("Token JWT expiré");
+        } catch (UnsupportedJwtException ex){
+            System.out.println("Token non supporté ici");
+        } catch (IllegalArgumentException ex){
+            System.out.println("Token vide...");
+        }
+        return false;
+    }
 
     //Get user Id from token
+    public Long getUserIdFromJWT(String token){
+        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        String id = (String) claims.get("id");
+        return Long.parseLong(id);
+    }
 }
