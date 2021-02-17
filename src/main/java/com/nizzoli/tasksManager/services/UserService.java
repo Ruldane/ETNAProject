@@ -10,24 +10,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired // field injection
+    @Autowired
     private UserRepository userRepository;
+
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User saveUser(User newUser){
-        try {
-            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-            // unique username
-            newUser.setUsername(newUser.getUsername());
-            // password and confirm password ae the same
+    public User saveUser (User newUser){
 
-            //we don't persist or show confirmPassword
-            newUser.setPassword("");
+        try{
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            //Username has to be unique (exception)
+            newUser.setUsername(newUser.getUsername());
+            // Make sure that password and confirmPassword match
+            // We don't persist or show the confirmPassword
+            newUser.setConfirmPassword("");
             return userRepository.save(newUser);
-        } catch (Exception e){
-            throw new UsernameAlreadyExistsException("User "+ newUser.getUsername() + " existe déjà");
+
+        }catch (Exception e){
+            throw new UsernameAlreadyExistsException("Username '"+newUser.getUsername()+"' existe déjà");
         }
+
     }
 }

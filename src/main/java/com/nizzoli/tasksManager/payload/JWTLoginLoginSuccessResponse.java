@@ -1,6 +1,7 @@
 package com.nizzoli.tasksManager.payload;
 
 public class JWTLoginLoginSuccessResponse {
+
     private boolean success;
     private String token;
 
@@ -27,7 +28,7 @@ public class JWTLoginLoginSuccessResponse {
 
     @Override
     public String toString() {
-        return "JWTLoginLoginSuccessResponse{" +
+        return "JWTLoginSucessReponse{" +
                 "success=" + success +
                 ", token='" + token + '\'' +
                 '}';

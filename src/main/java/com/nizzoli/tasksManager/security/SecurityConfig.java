@@ -17,23 +17,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import static com.nizzoli.tasksManager.security.SecurityConstants.H2_URL;
 import static com.nizzoli.tasksManager.security.SecurityConstants.SIGN_UP_URL;
 
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true
+)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    CustomUserDetailsService CustomUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(CustomUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
@@ -44,14 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // disabled because we are using tokens jwt
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .headers().frameOptions().sameOrigin().and() // To enabled H2 Database
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .headers().frameOptions().sameOrigin() //To enable H2 Database
+                .and()
                 .authorizeRequests()
-                // no need to be connect to use this type of files
                 .antMatchers(
                         "/",
                         "/favicon.ico",
